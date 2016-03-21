@@ -1,0 +1,22 @@
+{
+  "name": "cl-layer",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devWayne/Layer.git"
+  },
+  "author": "Jarvan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devWayne/Layer/issues"
+  },
+  "homepage": "https://github.com/devWayne/Layer#readme",
+  "dependencies": {
+    "eventemitter2": "^1.0.0"
+  }
+}
