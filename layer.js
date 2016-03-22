@@ -57,10 +57,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Layer = __webpack_require__(1);
 
 	var TPL =
-	    '<header>\
+	    '<div class="header">\
 	        <h1></h1>\
 	        <a class="back">返回</a>\
-	    </header>\
+	    </div>\
 	    <div class="body"></div>';
 
 	function Slide(config) {
@@ -75,7 +75,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setContent(TPL);
 
 	    if (this.config.hideHeader) {
-	        this.$el.find('header').addClass('hide');
+	        this.$el.find('.header').addClass('hide');
 	    }
 
 	    this.setHeaderContent(config.headerContent)
@@ -101,7 +101,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 
 	        //页头的滚动始终阻止
-	        this.$el.find('header').on('touchstart', function(e) {
+	        this.$el.find('.header').on('touchstart', function(e) {
 	            PREVENT_SCROLL(e);
 	        });
 
@@ -131,7 +131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Slide.prototype.bindBack = function() {
 	        var self = this;
 	        if (!this.config.hideHeader) {
-	            this.$el.find('header .back').on('click', function(e) {
+	            this.$el.find('.header .back').on('click', function(e) {
 	                e.preventDefault();
 	                self.hide();
 	            });
@@ -151,7 +151,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	Slide.prototype.setHeaderContent = function(content) {
 	        this.config.headerContent = content;
-	        this.$el.find('header h1').empty().append(content);
+	        this.$el.find('.header h1').empty().append(content);
 	        return this;
 	    }
 	    /**
@@ -181,7 +181,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var EventEmitter2 = __webpack_require__(2).EventEmitter2;
 	var eventEmitter = new EventEmitter2();
 	var SUPPORT_FIXED = function() {
-	    let el = document.createElement('div');
+	    var el = document.createElement('div');
 	    el.style.position = 'fixed';
 	    return el.style.position === 'fixed';
 	}();
@@ -244,7 +244,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this;
 	    }
 
-	    let route = '#' + (this.config.route || (ROUTE + '-' + ROUTE_INDEX));
+	    var route = '#' + (this.config.route || (ROUTE + '-' + ROUTE_INDEX));
 	    ROUTE_INDEX++;
 
 	    if (route === location.hash) {
@@ -289,7 +289,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * @method show
 	     * @chainable
 	     */
-	Layer.prototype.show = function() {
+	Layer.prototype.show = function(callback) {
 	    var self = this;
 	    this.showed = true;
 	    if (!SUPPORT_FIXED) {
@@ -302,26 +302,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	    setTimeout(function(){
 	        self.$el.addClass('show');
 	        eventEmitter.emit('show');
+	        callback && callback();
 	    }, 50);
 
 	    return this;
 	}
 
-	Layer.prototype.hide = function() {
+	Layer.prototype.hide = function(callback) {
 	    var self = this;
 	    if (this.showed) {
 	        this.showed = false;
 	    } else {
 	        return this;
 	    }
-	    let listener;
+	    var listener;
 	    this.$el.on(TRANSITION_END, listener = function(){
 	        self.$el.hide();
 	        self.$el.off(TRANSITION_END, listener);
 	    });
 	    this.$el.removeClass('show');
 	    eventEmitter.emit('hide');
-
+	    callback && callback();
 	    return this;
 	}
 

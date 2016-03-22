@@ -1,10 +1,10 @@
 var Layer = require("../index");
 
 var TPL =
-    '<header>\
+    '<div class="header">\
         <h1></h1>\
         <a class="back">返回</a>\
-    </header>\
+    </div>\
     <div class="body"></div>';
 
 function Slide(config) {
@@ -19,7 +19,7 @@ function Slide(config) {
     this.setContent(TPL);
 
     if (this.config.hideHeader) {
-        this.$el.find('header').addClass('hide');
+        this.$el.find('.header').addClass('hide');
     }
 
     this.setHeaderContent(config.headerContent)
@@ -45,7 +45,7 @@ Slide.prototype.bindScroll = function() {
         };
 
         //页头的滚动始终阻止
-        this.$el.find('header').on('touchstart', function(e) {
+        this.$el.find('.header').on('touchstart', function(e) {
             PREVENT_SCROLL(e);
         });
 
@@ -75,7 +75,7 @@ Slide.prototype.bindScroll = function() {
 Slide.prototype.bindBack = function() {
         var self = this;
         if (!this.config.hideHeader) {
-            this.$el.find('header .back').on('click', function(e) {
+            this.$el.find('.header .back').on('click', function(e) {
                 e.preventDefault();
                 self.hide();
             });
@@ -95,7 +95,7 @@ Slide.prototype.bindBack = function() {
      */
 Slide.prototype.setHeaderContent = function(content) {
         this.config.headerContent = content;
-        this.$el.find('header h1').empty().append(content);
+        this.$el.find('.header h1').empty().append(content);
         return this;
     }
     /**

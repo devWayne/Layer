@@ -1,7 +1,7 @@
 var EventEmitter2 = require('eventemitter2').EventEmitter2;
 var eventEmitter = new EventEmitter2();
 var SUPPORT_FIXED = function() {
-    let el = document.createElement('div');
+    var el = document.createElement('div');
     el.style.position = 'fixed';
     return el.style.position === 'fixed';
 }();
@@ -64,7 +64,7 @@ Layer.prototype.bindRoute = function() {
         return this;
     }
 
-    let route = '#' + (this.config.route || (ROUTE + '-' + ROUTE_INDEX));
+    var route = '#' + (this.config.route || (ROUTE + '-' + ROUTE_INDEX));
     ROUTE_INDEX++;
 
     if (route === location.hash) {
@@ -109,7 +109,7 @@ Layer.prototype.setContent = function(content) {
      * @method show
      * @chainable
      */
-Layer.prototype.show = function() {
+Layer.prototype.show = function(callback) {
     var self = this;
     this.showed = true;
     if (!SUPPORT_FIXED) {
@@ -122,26 +122,27 @@ Layer.prototype.show = function() {
     setTimeout(function(){
         self.$el.addClass('show');
         eventEmitter.emit('show');
+        callback && callback();
     }, 50);
 
     return this;
 }
 
-Layer.prototype.hide = function() {
+Layer.prototype.hide = function(callback) {
     var self = this;
     if (this.showed) {
         this.showed = false;
     } else {
         return this;
     }
-    let listener;
+    var listener;
     this.$el.on(TRANSITION_END, listener = function(){
         self.$el.hide();
         self.$el.off(TRANSITION_END, listener);
     });
     this.$el.removeClass('show');
     eventEmitter.emit('hide');
-
+    callback && callback();
     return this;
 }
 
